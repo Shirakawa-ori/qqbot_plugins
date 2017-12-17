@@ -1,4 +1,8 @@
 # qqbot_plugins
+---------
+
+本项目是基于qqbot的插件，需要配合qqbot使用。</br>
+qqbot github 地址： <https://github.com/pandolia/qqbot>
 
 ----------
 ## 完成的几个qqbot插件 ##
