@@ -15,3 +15,6 @@ qqbot github 地址： <https://github.com/pandolia/qqbot>
 
  3. IOT_Light</br>
     IOT方面的插件，控制IO电平（这里应用就是开关灯了），群内@bot使用。qqbot收到指令后把指令传给服务端，服务端这里用的是树莓派，下接Arduino，串口通信控制电平。
+
+4.bilibili_TAGupdate_track.py</br>
+b站关键词搜索更新，当初为了追踪新投稿用的，群内艾特触发，也用到了redis.
