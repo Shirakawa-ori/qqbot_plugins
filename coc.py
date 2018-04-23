@@ -5,32 +5,6 @@ from random import choice
 import time
 import base64
 
-'''
-#avg
-def ran(min,max):
-    i = 0
-    ranlist = []
-    while (i<3):
-        ranumber = random.randint(min,max)
-        if random.randint(0,1):
-            ranumber = ranumber + random.randint(0,3)
-        else :
-            ranumber = ranumber -random.randint(0,1)
-        if ranumber > max:
-            ranumber = max
-        elif ranumber < min:
-            ranumber = min
-        ranlist.append(ranumber)
-        i = i+1
-    i = 0
-    sum = 0
-    while (i<100):
-        sum = sum + choice(ranlist)
-        i = i + 1
-    avg = sum/100
-    return avg
-'''
-
 #Tool fun
 
 def enbase64(s):
@@ -83,7 +57,7 @@ def ranlist(min,max,listlen):
         retlist.append(ran2())
         i = i+1
     return retlist
-    #return {ran(min,max),ran(min,max),ran(min,max),ran(min,max),ran(min,max),ran(min,max),ran(min,max),ran(min,max)}
+    #return [ran(min,max),ran(min,max),ran(min,max),ran(min,max),ran(min,max),ran(min,max),ran(min,max),ran(min,max)]
 
 def smsretList(listlen):
     i = 0
@@ -93,48 +67,32 @@ def smsretList(listlen):
         i = i+1
     return smslist
 
-def mindmax(content,member):
+def retrsname(name):
+    try:
         rs1 = conn_redis(redis_db = '1')
-        mm = str(content[2:])
-        minmax = mm.split('d')
-        min = int(minmax[0])
-        max = min * int(minmax[1])
-        try:
-            name = member.name
-        except Exception,e:
-            name = '暗投'
         rsname = getname(rs1,enbase64(name))
         if rsname != '':
             name = debase64(rsname)
         else :
             pass
-        sms = name +' 投掷: ' + str(min) +'d'+ str(minmax[1]) + ' = ' + str(ran(min,max))
-        return sms
-        
+        return name
+    except Exception,e:
+        print e
+        return name
+
 #procedure fun
 def rd(content,member):
     rs1 = conn_redis(redis_db = '1')
     num = int(content[3:])
     try:
-        name = member.name
+        name = retrsname(member.name)
     except Exception,e:
         name = '暗投'
-    rsname = getname(rs1,enbase64(name))
-    if rsname != '':
-        name = debase64(rsname)
-    else :
-        pass
     sms =  name +' 投掷: ' + '1'+'d'+ str(num) +' = '+ str(ran(1,num))
     return sms
 
 def coc(content,member):
-    rs1 = conn_redis(redis_db = '1')
-    name = member.name
-    rsname = getname(rs1,enbase64(name))
-    if rsname != '':
-        name = debase64(rsname)
-    else :
-        pass
+    name = retrsname(member.name)
     if content[4:] == '':
         loopnum = 1
     else:
@@ -174,7 +132,7 @@ def remapName(content,member):
 
 def myname(content,member):
     try:
-        rs1 = conn_redis(redis_db = '1')
+        
         name = member.name
         rsname = getname(rs1,enbase64(name))
         if rsname != '':
@@ -186,6 +144,18 @@ def myname(content,member):
         return errsms
     finally:
         pass
+
+def mindmax(content,member):
+        mm = str(content[2:])
+        minmax = mm.split('d')
+        min = int(minmax[0])
+        max = min * int(minmax[1])
+        try:
+            name = retrsname(member.name)
+        except Exception,e:
+            name = '暗投'
+        sms = name +' 投掷: ' + str(min) +'d'+ str(minmax[1]) + ' = ' + str(ran(min,max))
+        return sms
 
 #MesEnter fun
 def onQQMessage(bot, contact, member, content):
